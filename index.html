@@ -12,9 +12,19 @@
 body{margin:0;background:#d9d9d9;font-family:Arial;display:flex;flex-direction:column;align-items:center}
 .toolbar{padding:10px;background:#222;width:100%;text-align:center}
 button{padding:10px 20px;margin:5px;font-size:16px}
-#book{width:1200px;max-width:100%;height:800px;margin-top:10px}
+ 
+#book{
+    width:100vm;
+    height:calc(100vh - 50px);
+ }
+ 
 .page{background:white}
-canvas{width:100%;height:100%}
+canvas{
+   width:100% !important;
+   height:auto !important;
+   object-fit:contain;
+}
+ 
 </style>
 </head>
 <body>
@@ -40,7 +50,25 @@ for(let i=1;i<=pdf.numPages;i++){
  div.className='page'; div.appendChild(canvas); pages.push(div);
 }
 pages.forEach(p=>container.appendChild(p));
- const flipBook=new St.PageFlip(container,{width:400,height:600,size:"stretch",showCover:true,mobileScrollSupport:true,maxShadowOpacity:0.5,useMouseEvents:true});
+ const flipBook=new St.PageFlip(container,{
+   width:350,
+   height:500,
+   size:"stretch",
+  
+   minWidth:280,
+   maxWidth:1200,
+  
+   minHeight:400,
+   maxHeight:1600,
+   
+   usePortrait:true,
+   autoSize:true,
+  
+   showCover:true,
+   mobileScrollSupport:true,
+   maxShadowOpacity:0.5,
+   useMouseEvents:true});
+ 
  flipBook.loadFromHTML(document.querySelectorAll('.page'));
 document.getElementById('next').addEventListener('click',()=>flipBook.flipNext());
 document.getElementById('prev').addEventListener('click',()=>flipBook.flipPrev());
