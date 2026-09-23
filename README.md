@@ -1,1 +1,1 @@
-Teks Koor
+Upload index.html dan PDF ke repository GitHub Pages.
