@@ -14,9 +14,14 @@ body{margin:0;background:#d9d9d9;font-family:Arial;display:flex;flex-direction:c
 button{padding:10px 20px;margin:5px;font-size:16px}
  
 #book{
-    width:100vm;
-    height:calc(100vh - 50px);
- }
+width:100vw;
+height:calc(100vh - 60px);
+}
+ 
+.stf__parent{
+width:100% !important;
+height:100% !important;
+}
  
 .page{background:white}
 canvas{
@@ -54,7 +59,7 @@ pages.forEach(p=>container.appendChild(p));
 
  const flipBook = new St.PageFlip(container,{
    width:350,
-   height:500,
+   height:450,
  
    size:"stretch",
    autoSize:true,
@@ -70,13 +75,18 @@ pages.forEach(p=>container.appendChild(p));
    usePortrait:true,
    mobileScrollSupport:true,
    useMouseEvents:true,
- 
+   drawShadow:false,
+   
+   startPage:0,
    maxShadowOpacity:0.5,
  
    showPageCorners:false
 });
  
  flipBook.loadFromHTML(document.querySelectorAll('.page'));
+ flipBook.updateFromHtml(
+document.querySelectorAll(".page")
+);
 document.getElementById('next').addEventListener('click',()=>flipBook.flipNext());
 document.getElementById('prev').addEventListener('click',()=>flipBook.flipPrev());
 }
