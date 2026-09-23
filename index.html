@@ -50,24 +50,31 @@ for(let i=1;i<=pdf.numPages;i++){
  div.className='page'; div.appendChild(canvas); pages.push(div);
 }
 pages.forEach(p=>container.appendChild(p));
- const flipBook=new St.PageFlip(container,{
+
+
+ const flipBook = new St.PageFlip(container,{
    width:350,
    height:500,
+ 
    size:"stretch",
-  
+   autoSize:true,
+ 
    minWidth:280,
    maxWidth:1200,
-  
+ 
    minHeight:400,
    maxHeight:1600,
-   
-   usePortrait:true,
-   autoSize:true,
-  
+ 
    showCover:true,
+ 
+   usePortrait:true,
    mobileScrollSupport:true,
+   useMouseEvents:true,
+ 
    maxShadowOpacity:0.5,
-   useMouseEvents:true});
+ 
+   showPageCorners:false
+});
  
  flipBook.loadFromHTML(document.querySelectorAll('.page'));
 document.getElementById('next').addEventListener('click',()=>flipBook.flipNext());
