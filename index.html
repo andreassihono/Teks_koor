@@ -3,17 +3,100 @@
 <head>
 <meta charset="utf-8">
 <title>Teks Koor</title>
+
+https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.jsscript>
+
+<style>
+body{
+    margin:0;
+    background:#eee;
+    text-align:center;
+}
+
+canvas{
+    max-width:100%;
+    height:auto;
+    box-shadow:0 0 10px rgba(0,0,0,.3);
+}
+
+.toolbar{
+    padding:10px;
+    background:#333;
+}
+
+button{
+    padding:10px 20px;
+    font-size:16px;
+    margin:0 10px;
+}
+</style>
 </head>
 
 <body>
 
-<h1>Teks Koor</h1>
+<div class="toolbar">
+    <button onclick="prevPage()">◀ Prev</button>
+    <span id="pageInfo" style="color:white;">Page 1</span>
+    <button onclick="nextPage()">Next ▶</button>
+</div>
 
-<p>
-Daftar%20Lagu%20Misa.pdf
-Buka PDF
-</a>
-</p>
+<canvas id="pdfCanvas"></canvas>
+
+<script>
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+let pdfDoc = null;
+let currentPage = 1;
+
+async function renderPage(pageNum){
+
+    const page = await pdfDoc.getPage(pageNum);
+
+    const viewport = page.getViewport({scale:1.8});
+
+    const canvas = document.getElementById('pdfCanvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
+
+    await page.render({
+        canvasContext: ctx,
+        viewport: viewport
+    }).promise;
+
+    document.getElementById('pageInfo').innerHTML =
+        'Page ' + pageNum + ' / ' + pdfDoc.numPages;
+}
+
+async function loadPDF(){
+
+    pdfDoc = await pdfjsLib.getDocument(
+        'Daftar%20Lagu%20Misa.pdf'
+    ).promise;
+
+    renderPage(1);
+}
+
+function nextPage(){
+    if(currentPage < pdfDoc.numPages){
+        currentPage++;
+        renderPage(currentPage);
+    }
+}
+
+function prevPage(){
+    if(currentPage > 1){
+        currentPage--;
+        renderPage(currentPage);
+    }
+}
+
+loadPDF();
+
+</script>
 
 </body>
 </html>
