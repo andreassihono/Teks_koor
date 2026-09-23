@@ -40,8 +40,8 @@ for(let i=1;i<=pdf.numPages;i++){
  div.className='page'; div.appendChild(canvas); pages.push(div);
 }
 pages.forEach(p=>container.appendChild(p));
-const flipBook=new St.PageFlip(container,{width:600,height:800,showCover:true,mobileScrollSupport:true,maxShadowOpacity:0.5,useMouseEvents:true});
-flipBook.loadFromHTML(document.querySelectorAll('.page'));
+ const flipBook=new St.PageFlip(container,{width:400,height:600,size:"stretch",showCover:true,mobileScrollSupport:true,maxShadowOpacity:0.5,useMouseEvents:true});
+ flipBook.loadFromHTML(document.querySelectorAll('.page'));
 document.getElementById('next').addEventListener('click',()=>flipBook.flipNext());
 document.getElementById('prev').addEventListener('click',()=>flipBook.flipPrev());
 }
