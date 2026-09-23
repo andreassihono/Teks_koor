@@ -1,63 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Teks Koor</title>
+    <meta charset="utf-8">
+    <title>Teks Koor</title>
 
-https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.jsscript>
+    <script src="https://cdnjs.cloudflare.com/ajax3.11.174/pdf.min.jsscript>
 
-<style>
-body{
-    margin:0;
-    background:#eee;
-    text-align:center;
-}
+    <style>
+        body{
+            margin:0;
+            background:#f0f0f0;
+            text-align:center;
+        }
 
-canvas{
-    max-width:100%;
-    height:auto;
-    box-shadow:0 0 10px rgba(0,0,0,.3);
-}
+        .toolbar{
+            background:#333;
+            padding:10px;
+        }
 
-.toolbar{
-    padding:10px;
-    background:#333;
-}
+        button{
+            padding:10px 20px;
+            font-size:18px;
+        }
 
-button{
-    padding:10px 20px;
-    font-size:16px;
-    margin:0 10px;
-}
-</style>
+        canvas{
+            max-width:95%;
+            margin-top:10px;
+            box-shadow:0 0 10px #999;
+            background:white;
+        }
+
+        #pageInfo{
+            color:white;
+            margin:0 15px;
+            font-size:18px;
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="toolbar">
     <button onclick="prevPage()">◀ Prev</button>
-    <span id="pageInfo" style="color:white;">Page 1</span>
+    <span id="pageInfo">Loading...</span>
     <button onclick="nextPage()">Next ▶</button>
 </div>
 
 <canvas id="pdfCanvas"></canvas>
 
 <script>
-
 pdfjsLib.GlobalWorkerOptions.workerSrc =
-'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 let pdfDoc = null;
-let currentPage = 1;
+let pageNum = 1;
 
-async function renderPage(pageNum){
+async function renderPage(num){
 
-    const page = await pdfDoc.getPage(pageNum);
+    const page = await pdfDoc.getPage(num);
 
-    const viewport = page.getViewport({scale:1.8});
+    const viewport = page.getViewport({scale:1.5});
 
-    const canvas = document.getElementById('pdfCanvas');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.getElementById("pdfCanvas");
+    const ctx = canvas.getContext("2d");
 
     canvas.width = viewport.width;
     canvas.height = viewport.height;
@@ -67,35 +72,34 @@ async function renderPage(pageNum){
         viewport: viewport
     }).promise;
 
-    document.getElementById('pageInfo').innerHTML =
-        'Page ' + pageNum + ' / ' + pdfDoc.numPages;
+    document.getElementById("pageInfo").innerText =
+        "Page " + num + " / " + pdfDoc.numPages;
 }
 
 async function loadPDF(){
 
     pdfDoc = await pdfjsLib.getDocument(
-        'Daftar%20Lagu%20Misa.pdf'
+        "Daftar%20Lagu%20Misa.pdf"
     ).promise;
 
-    renderPage(1);
+    renderPage(pageNum);
 }
 
 function nextPage(){
-    if(currentPage < pdfDoc.numPages){
-        currentPage++;
-        renderPage(currentPage);
+    if(pageNum < pdfDoc.numPages){
+        pageNum++;
+        renderPage(pageNum);
     }
 }
 
 function prevPage(){
-    if(currentPage > 1){
-        currentPage--;
-        renderPage(currentPage);
+    if(pageNum > 1){
+        pageNum--;
+        renderPage(pageNum);
     }
 }
 
 loadPDF();
-
 </script>
 
 </body>
